@@ -18,23 +18,26 @@ import java.util.Scanner;
 public class LibrarySystem{
     public static void main(String[] args){
         String userPath = "./user.txt";
+        String resourcePath = "./resource.txt";
         User[] user = new User[1000];
+        Resource[] resource = new Resource[1000];
         popUser(user, userPath);
-        mainGUI(user);
+        popResource(resource, resourcePath);
+        mainGUI(user, resource);
         writeUser(user, userPath);
     }
 
-    public static void mainGUI(User[] user){
+    public static void mainGUI(User[] user, Resource[] resource){
         if(User.getCount() == 0){
             createAdmin(user);
-            mainGUI(user);
+            mainGUI(user, resource);
         }
         else{
-            loginMenu(user);
+            loginMenu(user, resource);
         }
     }
 
-    public static void loginMenu(User[] user){
+    public static void loginMenu(User[] user, Resource[] resource){
 
         int option = 0;
         String message = "Welcome\n" +
@@ -45,7 +48,7 @@ public class LibrarySystem{
             option = getIntInput(message, 1, 3);
             switch(option){
                 case 1:
-                    login(user);
+                    login(user, resource);
                     break;
                 case 2:
                     createNewUser(user);
@@ -59,7 +62,7 @@ public class LibrarySystem{
         }
     }
 
-    public static void login(User[] user){
+    public static void login(User[] user, Resource[] resource){
         String email;
         String password;
 
@@ -69,7 +72,7 @@ public class LibrarySystem{
         for(int i = 0; i < User.getCount(); i++){
             if(user[i].getEmail().equals(email)){
                 if(user[i].getPassword().equals(password)){
-                    successLogin(user[i]);
+                    successLogin(user[i], resource);
                 }else{
                     System.out.println("Invalid Password");
                 }
@@ -78,17 +81,63 @@ public class LibrarySystem{
         System.out.println("here");
     }
 
-    public static void successLogin(User user){
+    public static void successLogin(User user, Resource[] resource){
         if(user instanceof Admin){
             System.out.println("Admin");
         }
         else if(user instanceof Employee){
             System.out.println("Employee");
         }else{
-            System.out.println("User");
+            userGUI(resource);
         }
     }
 
+    public static void userGUI(Resource[] resource){
+        String gui = "[1] Search for book by title\n" +
+                    "[2] Exit";
+        int option = 0;
+        while(option != 2){
+            option = getIntInput(gui, 1, 2);
+            switch(option){
+                case 1:
+                    searchBookByName(resource);
+                    break;
+                case 2:
+                    break;
+                default:
+                    option = 0;
+                    break;
+            }
+        }
+
+    }
+
+    public static void employeeGUI(){
+
+    }
+
+    public static void adminGUI(){
+
+    }
+
+    public static void searchBookByName(Resource[] resource){
+        String message = "Which title would you like to look for?";
+        String input = stringInput(message);
+        boolean found = false;
+        for(int i = 0; i < Resource.getCount(); i++){
+            if(input.equals(resource[i].getName())){
+                found = true;
+                if(resource[i].getCheckedOut() == true){
+                    JOptionPane.showMessageDialog(null, "The book is checked out");
+                }else{
+                    JOptionPane.showMessageDialog(null, "The book is in stock");
+                }
+            }
+        }
+        if(!found){
+            JOptionPane.showMessageDialog(null, "The book is not in the system");
+        }
+    }
     public static void popUser(User[] user, String path){
         int counter = 0;
         File file = new File(path);
@@ -114,6 +163,30 @@ public class LibrarySystem{
                 else{
                     user[counter] = new User(email, password);
                 }
+                counter++;
+            }
+            br.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void popResource(Resource[] re, String path){
+        int counter = 0;
+        File file = new File(path);
+
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String nextLine;
+            String type;
+            String name;
+            Boolean checkedOut;
+
+            while((nextLine = br.readLine()) != null){
+                type = stripType(nextLine);
+                name = stripMid(nextLine, 1, 2);
+                checkedOut = stripLast(nextLine).equals("True");
+                re[counter] = new Resource(type, name, checkedOut);
                 counter++;
             }
             br.close();
