@@ -25,7 +25,7 @@ public class LibrarySystem{
 
     public static void mainGUI(User[] user){
         if(User.getCount() == 0){
-            System.out.println("create admin");
+            createAdmin(user);
         }
     }
 
@@ -102,4 +102,21 @@ public class LibrarySystem{
         return line.substring(last+2, line.length());
     }
 
+    public static void createAdmin(User[] user){
+        String email;
+        String password;
+
+        email = stringInput("Enter Admin's email");
+        password = stringInput("Enter Admin's password");
+    }
+
+    public static String stringInput(String message){
+        String s = "";
+        s = JOptionPane.showInputDialog(message);
+        if(s.equals("")){
+            JOptionPane.showMessageDialog(null, "Error! Invalid input!");
+            s = stringInput(message);
+        }
+        return s;
+    }
 }
