@@ -21,11 +21,71 @@ public class LibrarySystem{
         User[] user = new User[1000];
         popUser(user, userPath);
         mainGUI(user);
+        writeUser(user, userPath);
     }
 
     public static void mainGUI(User[] user){
         if(User.getCount() == 0){
             createAdmin(user);
+            mainGUI(user);
+        }
+        else{
+            loginMenu(user);
+        }
+    }
+
+    public static void loginMenu(User[] user){
+
+        int option = 0;
+        String message = "Welcome\n" +
+                        "[1] Login\n" +
+                        "[2] Create new account\n" +
+                        "[3] Exit";
+        while(option != 3){
+            option = getIntInput(message, 1, 3);
+            switch(option){
+                case 1:
+                    login(user);
+                    break;
+                case 2:
+                    createNewUser(user);
+                    break;
+                case 3:
+                    break;
+                default:
+                    option = 0;
+                    break;
+            }
+        }
+    }
+
+    public static void login(User[] user){
+        String email;
+        String password;
+
+        email = stringInput("Enter email");
+        password = stringInput("Enter password");
+
+        for(int i = 0; i < User.getCount(); i++){
+            if(user[i].getEmail().equals(email)){
+                if(user[i].getPassword().equals(password)){
+                    successLogin(user[i]);
+                }else{
+                    System.out.println("Invalid Password");
+                }
+            }
+        }
+        System.out.println("here");
+    }
+
+    public static void successLogin(User user){
+        if(user instanceof Admin){
+            System.out.println("Admin");
+        }
+        else if(user instanceof Employee){
+            System.out.println("Employee");
+        }else{
+            System.out.println("User");
         }
     }
 
@@ -60,6 +120,41 @@ public class LibrarySystem{
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static void writeUser(User[] user, String path){
+        PrintWriter pw = null;
+        String email;
+        String password;
+        String write;
+        final String Space = " : ";
+        try{
+            pw = new PrintWriter(path);
+            for(int i = 0; i < User.getCount(); i++){
+                if(user[i] != null){
+                    email = user[i].getEmail();
+                    password = user[i].getPassword();
+                    if(i > 0){
+                        write = "\n";
+                    }else{
+                        write = "";
+                    }
+                    if(user[i] instanceof Admin){
+                        write += "Admin" + Space;
+                    }else if(user[i] instanceof Employee){
+                        write += "Employee" + Space;
+                    }else{
+                        write += "User" + Space;
+                    }
+                    write += email + Space + password;
+                    pw.write(write);
+                }
+            }
+		}catch(IOException e){
+			e.printStackTrace();
+		}finally{
+			pw.close();
+		}
     }
 
     public static String stripType(String line){
@@ -108,6 +203,19 @@ public class LibrarySystem{
 
         email = stringInput("Enter Admin's email");
         password = stringInput("Enter Admin's password");
+
+        user[0] = new Admin(email, password);
+    }
+
+    public static void createNewUser(User[] user){
+        int index = User.getCount();
+        String email;
+        String password;
+
+        email = stringInput("Enter user's email");
+        password = stringInput("Enter user's password");
+
+        user[index] = new User(email, password);
     }
 
     public static String stringInput(String message){
@@ -118,5 +226,19 @@ public class LibrarySystem{
             s = stringInput(message);
         }
         return s;
+    }
+
+    public static int getIntInput(String message, int min, int max){
+        int input = 0;
+        try{
+            input = Integer.parseInt(JOptionPane.showInputDialog(message));
+        }catch(NumberFormatException e){
+            input = 0;
+        }
+        if(input < min || input > max){
+            JOptionPane.showMessageDialog(null, "Error! Invalid input entered!");
+            input = getIntInput(message, min, max);
+        }
+        return input;
     }
 }
