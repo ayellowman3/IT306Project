@@ -18,23 +18,27 @@ import java.util.Scanner;
 public class LibrarySystem{
     public static void main(String[] args){
         String userPath = "./user.txt";
+        String resourcePath = "./resource.txt";
         User[] user = new User[1000];
+        Resource[] resource = new Resource[1000];
         popUser(user, userPath);
-        mainGUI(user);
+        popResource(resource, resourcePath);
+        mainGUI(user, resource);
         writeUser(user, userPath);
+        writeResource(resource, resourcePath);
     }
 
-    public static void mainGUI(User[] user){
+    public static void mainGUI(User[] user, Resource[] resource){
         if(User.getCount() == 0){
             createAdmin(user);
-            mainGUI(user);
+            mainGUI(user, resource);
         }
         else{
-            loginMenu(user);
+            loginMenu(user, resource);
         }
     }
 
-    public static void loginMenu(User[] user){
+    public static void loginMenu(User[] user, Resource[] resource){
 
         int option = 0;
         String message = "Welcome\n" +
@@ -45,7 +49,7 @@ public class LibrarySystem{
             option = getIntInput(message, 1, 3);
             switch(option){
                 case 1:
-                    login(user);
+                    login(user, resource);
                     break;
                 case 2:
                     createNewUser(user);
@@ -59,7 +63,7 @@ public class LibrarySystem{
         }
     }
 
-    public static void login(User[] user){
+    public static void login(User[] user, Resource[] resource){
         String email;
         String password;
 
@@ -69,7 +73,7 @@ public class LibrarySystem{
         for(int i = 0; i < User.getCount(); i++){
             if(user[i].getEmail().equals(email)){
                 if(user[i].getPassword().equals(password)){
-                    successLogin(user[i]);
+                    successLogin(user[i], resource);
                 }else{
                     System.out.println("Invalid Password");
                 }
@@ -78,15 +82,85 @@ public class LibrarySystem{
         System.out.println("here");
     }
 
-    public static void successLogin(User user){
+    public static void successLogin(User user, Resource[] resource){
         if(user instanceof Admin){
             System.out.println("Admin");
         }
         else if(user instanceof Employee){
             System.out.println("Employee");
         }else{
-            System.out.println("User");
+            userGUI(resource);
         }
+    }
+
+    public static void userGUI(Resource[] resource){
+        Resource[] tempResource = new Resource[1000];
+        tempResource = copyResource(resource);
+
+        String gui = "[1] Display resources\n" +
+                    "[2] Sort by ID\n" +
+                    "[3] Sort by Author\n" +
+                    "[4] Sort by Category\n" +
+                    "[5] Exit";
+        int option = 0;
+        while(option != 5){
+            option = getIntInput(gui, 1, 5);
+            switch(option){
+                case 1:displayResources(tempResource);
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:
+                    option = 0;
+                    break;
+            }
+        }
+
+    }
+
+    public static void employeeGUI(){
+
+    }
+
+    public static void adminGUI(){
+
+    }
+
+    public static void displayResources(Resource[] resource){
+        String display;
+
+        display = "List of resources\n\n[1]Sort\n[2]Filter\n[3]Exit";
+        for(int i = 0; i < Resource.getCount(); i++){
+            display += "\n" + tempResource[i].getName() + " ";
+            if(resource[i].getCheckedOut()){
+                display += "Checked Out";
+            }else{
+                display += "In stock";
+            }
+        }
+
+        int input = getIntInput(display, 1, 3);
+        switch(input){
+            case 1:
+                System.out.println("sort");
+                break;
+            case 2:
+                System.out.println("Filter");
+                break;
+        }
+    }
+
+    public static void sort(Resource[] resource){
+        String message = "What would you like to sort by?\n\n" +
+                        "[1] ID\n" +
+                        "[2] Author\n" +
+                        "[3] Genre";
     }
 
     public static void popUser(User[] user, String path){
@@ -122,6 +196,30 @@ public class LibrarySystem{
         }
     }
 
+    public static void popResource(Resource[] re, String path){
+        int counter = 0;
+        File file = new File(path);
+
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String nextLine;
+            String type;
+            String name;
+            Boolean checkedOut;
+
+            while((nextLine = br.readLine()) != null){
+                type = stripType(nextLine);
+                name = stripMid(nextLine, 1, 2);
+                checkedOut = stripLast(nextLine).equals("True");
+                re[counter] = new Resource(type, name, checkedOut);
+                counter++;
+            }
+            br.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public static void writeUser(User[] user, String path){
         PrintWriter pw = null;
         String email;
@@ -147,6 +245,40 @@ public class LibrarySystem{
                         write += "User" + Space;
                     }
                     write += email + Space + password;
+                    pw.write(write);
+                }
+            }
+		}catch(IOException e){
+			e.printStackTrace();
+		}finally{
+			pw.close();
+		}
+    }
+
+    public static void writeResource(Resource[] re, String path){
+        PrintWriter pw = null;
+        String write;
+        String type;
+        String name;
+        String checkedOut;
+        final String Space = " : ";
+        try{
+            pw = new PrintWriter(path);
+            for(int i = 0; i < Resource.getCount(); i++){
+                if(re[i] != null){
+                    type = re[i].getType();
+                    name = re[i].getName();
+                    if(re[i].getCheckedOut()){
+                        checkedOut = "True";
+                    }else{
+                        checkedOut = "False";
+                    }
+                    if(i > 0){
+                        write = "\n";
+                    }else{
+                        write = "";
+                    }
+                    write += type + Space + name + Space + checkedOut;
                     pw.write(write);
                 }
             }
@@ -240,5 +372,13 @@ public class LibrarySystem{
             input = getIntInput(message, min, max);
         }
         return input;
+    }
+
+    public static Resource[] copyResource(Resource[] resource){
+        Resource[] tempResource = new Resource[1000];
+        for(int i = 0; i < Resource.getCount(); i++){
+            tempResource[i] = resource[i];
+        }
+        return tempResource;
     }
 }
