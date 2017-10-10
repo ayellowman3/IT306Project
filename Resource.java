@@ -21,6 +21,9 @@ public class Resource {
         return count;
     }
 
+    public String getType(){
+        return type;
+    }
     public String getName(){
         return name;
     }

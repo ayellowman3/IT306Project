@@ -25,6 +25,7 @@ public class LibrarySystem{
         popResource(resource, resourcePath);
         mainGUI(user, resource);
         writeUser(user, userPath);
+        writeResource(resource, resourcePath);
     }
 
     public static void mainGUI(User[] user, Resource[] resource){
@@ -93,16 +94,27 @@ public class LibrarySystem{
     }
 
     public static void userGUI(Resource[] resource){
-        String gui = "[1] Search for book by title\n" +
-                    "[2] Exit";
+        Resource[] tempResource = new Resource[1000];
+        tempResource = copyResource(resource);
+
+        String gui = "[1] Display resources\n" +
+                    "[2] Sort by ID\n" +
+                    "[3] Sort by Author\n" +
+                    "[4] Sort by Category\n" +
+                    "[5] Exit";
         int option = 0;
-        while(option != 2){
-            option = getIntInput(gui, 1, 2);
+        while(option != 5){
+            option = getIntInput(gui, 1, 5);
             switch(option){
-                case 1:
-                    searchBookByName(resource);
+                case 1:displayResources(tempResource);
                     break;
                 case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
                     break;
                 default:
                     option = 0;
@@ -120,24 +132,37 @@ public class LibrarySystem{
 
     }
 
-    public static void searchBookByName(Resource[] resource){
-        String message = "Which title would you like to look for?";
-        String input = stringInput(message);
-        boolean found = false;
+    public static void displayResources(Resource[] resource){
+        String display;
+
+        display = "List of resources\n\n[1]Sort\n[2]Filter\n[3]Exit";
         for(int i = 0; i < Resource.getCount(); i++){
-            if(input.equals(resource[i].getName())){
-                found = true;
-                if(resource[i].getCheckedOut() == true){
-                    JOptionPane.showMessageDialog(null, "The book is checked out");
-                }else{
-                    JOptionPane.showMessageDialog(null, "The book is in stock");
-                }
+            display += "\n" + tempResource[i].getName() + " ";
+            if(resource[i].getCheckedOut()){
+                display += "Checked Out";
+            }else{
+                display += "In stock";
             }
         }
-        if(!found){
-            JOptionPane.showMessageDialog(null, "The book is not in the system");
+
+        int input = getIntInput(display, 1, 3);
+        switch(input){
+            case 1:
+                System.out.println("sort");
+                break;
+            case 2:
+                System.out.println("Filter");
+                break;
         }
     }
+
+    public static void sort(Resource[] resource){
+        String message = "What would you like to sort by?\n\n" +
+                        "[1] ID\n" +
+                        "[2] Author\n" +
+                        "[3] Genre";
+    }
+
     public static void popUser(User[] user, String path){
         int counter = 0;
         File file = new File(path);
@@ -220,6 +245,40 @@ public class LibrarySystem{
                         write += "User" + Space;
                     }
                     write += email + Space + password;
+                    pw.write(write);
+                }
+            }
+		}catch(IOException e){
+			e.printStackTrace();
+		}finally{
+			pw.close();
+		}
+    }
+
+    public static void writeResource(Resource[] re, String path){
+        PrintWriter pw = null;
+        String write;
+        String type;
+        String name;
+        String checkedOut;
+        final String Space = " : ";
+        try{
+            pw = new PrintWriter(path);
+            for(int i = 0; i < Resource.getCount(); i++){
+                if(re[i] != null){
+                    type = re[i].getType();
+                    name = re[i].getName();
+                    if(re[i].getCheckedOut()){
+                        checkedOut = "True";
+                    }else{
+                        checkedOut = "False";
+                    }
+                    if(i > 0){
+                        write = "\n";
+                    }else{
+                        write = "";
+                    }
+                    write += type + Space + name + Space + checkedOut;
                     pw.write(write);
                 }
             }
@@ -313,5 +372,13 @@ public class LibrarySystem{
             input = getIntInput(message, min, max);
         }
         return input;
+    }
+
+    public static Resource[] copyResource(Resource[] resource){
+        Resource[] tempResource = new Resource[1000];
+        for(int i = 0; i < Resource.getCount(); i++){
+            tempResource[i] = resource[i];
+        }
+        return tempResource;
     }
 }
