@@ -2,7 +2,7 @@
  * Project phase 4
  * George Huang, G00775631, ghuang3@masonlive.gmu.edu
  * Ryan Evans, G00954546, revans17@masonlive.gmu.edu
- * Steven Chen, G00652234, schen27@masonlive.gmu.edu
+ * 
  */
 
 import javax.swing.JOptionPane;
