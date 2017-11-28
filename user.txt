@@ -1,5 +1,6 @@
-Admin : ghuang3@gmu.edu : 123456
-User : tacocat : 12345
-User : tacocatt : 12344444
-User : george : 123
-User : geroge123 : 123
+Admin : 1000 : George : Huang : ghuang3 : password : ghuang3@masonlive.gmu.edu : 13259 Middleton Farm Ln : 1
+User : 1002 : Panda : Huang : panda : password : ayellowman@gmail.com : 123 x street : 0
+User : 1003 : George : Huang : ayellowman : password : email : address : 0
+User : 1004 : test : test : test : test : test : test : 0
+Employee : 1005 : q : q : q : q : q : q : 0
+User : 1006 : g : g : g : g : g : g : 0
