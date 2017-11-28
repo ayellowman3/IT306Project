@@ -3,4 +3,4 @@ User : 1002 : Panda : Huang : panda : password : ayellowman@gmail.com : 123 x st
 User : 1003 : George : Huang : ayellowman : password : email : address : 0
 User : 1004 : test : test : test : test : test : test : 0
 Employee : 1005 : q : q : q : q : q : q : 0
-Employee : 1006 : p : p : p : p : p : p : 0
+User : 1006 : g : g : g : g : g : g : 0

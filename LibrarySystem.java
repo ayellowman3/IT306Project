@@ -1,3 +1,10 @@
+/*
+ * Project phase 4
+ * George Huang, G00775631, ghuang3@masonlive.gmu.edu
+ * Ryan Evans, G00954546, revans17@masonlive.gmu.edu
+ * Steven Chen, G00652234, schen27@masonlive.gmu.edu
+ */
+
 import javax.swing.JOptionPane;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,6 +22,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.*;
+
 
 
 public class LibrarySystem{
@@ -33,7 +42,7 @@ public class LibrarySystem{
     }
 
     public static void mainGUI(ArrayList<User> user, ArrayList<Resource> resource){
-        if(User.getCount() == 0){
+        if(user.size() == 0){
             createAdmin(user);
             mainGUI(user, resource);
         }
@@ -44,13 +53,13 @@ public class LibrarySystem{
 
     public static void loginMenu(ArrayList<User> user, ArrayList<Resource> resource){
 
-        int option = 0;
+        int option = -1;
         String message = "Welcome\n" +
                         "[1] Login\n" +
                         "[2] Create new account\n" +
-                        "[3] Exit";
-        while(option != 3){
-            option = getIntInput(message, 1, 3);
+                        "[0] Exit";
+        while(option != 0){
+            option = getIntInput(message, 0, 2);
             switch(option){
                 case 1:
                     login(user, resource);
@@ -84,7 +93,7 @@ public class LibrarySystem{
            }
         }
 
-        System.out.println("here");
+
     }
 
     public static void successLogin(User user, ArrayList<User> users, ArrayList<Resource> resource){
@@ -103,10 +112,10 @@ public class LibrarySystem{
         tempResource = copyResource(resource);
 
         String gui = "[1] Display resources\n" +
-                    "[2] Exit";
+                    "[0] Exit";
         int option = 0;
         while(option != 2){
-            option = getIntInput(gui, 1, 2);
+            option = getIntInput(gui, 0, 1);
             switch(option){
                 case 1:
                     displayResources(tempResource);
@@ -130,10 +139,10 @@ public class LibrarySystem{
                  "[3] Return\n"+
                  "[4] Update Resource\n"+
                  "[5] Add Resource\n"+
-                 "[6] Exit";
-        int option = 0;
-        while(option != 6){
-            option = getIntInput(gui, 1, 6);
+                 "[0] Exit";
+        int option = -1;
+        while(option != 0){
+            option = getIntInput(gui, 0, 5);
             switch(option){
                 case 1:
                     displayResources(tempResource);
@@ -170,7 +179,7 @@ public class LibrarySystem{
                     "[5] Add Resource\n"+
                     "[6] Add Employee\n"+
                     "[7] Modify Employee\n"+
-                    "[8] Delete Employee\n"+
+                    "[8] Delete User\n"+
                     "[0] Exit";
         int option = -1;
         while(option != 0){
@@ -197,10 +206,10 @@ public class LibrarySystem{
                     addEmployee(user);
                     break;
                 case 7:
-                    //modifyEmployee(user);
+                    modifyEmployee(user);
                     break;
                 case 8:
-                    //deleteEmployee(user);
+                    deleteUser(user);
                     break;
 
             }
@@ -210,8 +219,8 @@ public class LibrarySystem{
     public static void displayResources(ArrayList<Resource> resource){
         String display;
 
-        display = "List of resources\n\n[1]Sort\n[2]Filter\n[3]Exit\n";
-        for(int i = 0; i < Resource.getCount(); i++){
+        display = "List of resources\n\n[1]Sort\n[2]Filter\n[0]Exit\n";
+        for(int i = 0; i < resource.size(); i++){
             display += "\n" + resource.get(i).getName() + " ";
             if(resource.get(i).getCheckedOut()){
                 display += "Checked Out";
@@ -220,24 +229,28 @@ public class LibrarySystem{
             }
         }
 
-        int input = getIntInput(display, 1, 3);
+        int input = getIntInput(display, 0, 2);
         switch(input){
             case 1:
                 sort(resource);
                 break;
             case 2:
-                System.out.println("Filter");
+                filter(resource);
                 break;
         }
+    }
+
+    public static void filter(ArrayList<Resource> resource){
+
     }
 
     public static void sort(ArrayList<Resource> resource){
         String message = "What would you like to sort by?\n\n" +
                         "[1] ID\n" +
                         "[2] Title\n" +
-                        "[3] Exit";
+                        "[0] Exit";
 
-        int input = getIntInput(message, 1, 3);
+        int input = getIntInput(message, 0, 2);
         switch(input){
             case 1:
                 sortByID(resource);
@@ -245,13 +258,13 @@ public class LibrarySystem{
             case 2:
                 sortByTitle(resource);
                 break;
-            case 3:
+            case 0:
                 break;
         }
     }
 
     public static void sortByID(ArrayList<Resource> resource){
-
+        Collections.sort(resource, new ComparatorByID());
         displayResources(resource);
     }
 
@@ -261,8 +274,7 @@ public class LibrarySystem{
     }
 
     public static void popUser(ArrayList<User> user, String path){
-        int counter = 0;
-        File file = new File(path);
+        int counter = 0; File file = new File(path);
 
         try{
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -359,7 +371,7 @@ public class LibrarySystem{
         final String Space = " : ";
         try{
             pw = new PrintWriter(path);
-            for(int i = 0; i < User.getCount(); i++){
+            for(int i = 0; i < user.size(); i++){
                 if(user.get(i) != null){
                     userID = user.get(i).getUserID();
                     fName = user.get(i).getFName();
@@ -409,7 +421,7 @@ public class LibrarySystem{
         final String Space = " : ";
         try{
             pw = new PrintWriter(path);
-            for(int i = 0; i < Resource.getCount(); i++){
+            for(int i = 0; i < re.size(); i++){
                 if(re.get(i) != null){
                     id = re.get(i).getID();
                     type = re.get(i).getType();
@@ -577,11 +589,12 @@ public class LibrarySystem{
 
     public static ArrayList<Resource> copyResource(ArrayList<Resource> resource){
         ArrayList<Resource> tempResource = new ArrayList<Resource>();
-        for(int i = 0; i < Resource.getCount(); i++){
+        for(int i = 0; i < resource.size(); i++){
             tempResource.add(resource.get(i));
         }
         return tempResource;
     }
+
     public static void checkout(ArrayList<User> users, ArrayList<Resource> resources){
         String userID;
         String bookID;
@@ -653,6 +666,7 @@ public class LibrarySystem{
             }
         }
     }
+
     public static void updateResource(ArrayList<Resource> resource){
         String display = displayResourcesTitle(resource);
 
@@ -666,7 +680,7 @@ public class LibrarySystem{
         String display = "Which resource would you like to update?\n";
 
 
-        for(int i = 0; i < Resource.getCount(); i++){
+        for(int i = 0; i < resource.size(); i++){
             display += "\n[" + (i + 1) + "]" + resource.get(i).getName();
         }
         display+="\n[" + 0 + "] Exit";
@@ -682,28 +696,32 @@ public class LibrarySystem{
         "[3] Genre: " + resource.getGenre() + "\n" +
         "[4] Author id: " + resource.getAuthorID() + "\n" +
         "[5] Year: " + resource.getYear() + "\n" +
-        "[6] Exit";
+        "[0] Exit";
 
-        int edit = getIntInput(display, 1,6);
+        int edit = getIntInput(display, 0,5);
 
         switch(edit){
             case 1:
                 newUpdate = edit("type", resource.getType());
+                resource.setType(newUpdate);
                 break;
             case 2:
                 newUpdate = edit("title", resource.getName());
+                resource.setName(newUpdate);
                 break;
             case 3:
                 newUpdate = edit("genre", resource.getGenre());
+                resource.setGenre(newUpdate);
                 break;
             case 4:
                 newUpdate = edit("author id", resource.getAuthorID());
+                resource.setAuthorID(newUpdate);
                 break;
             case 5:
                 newUpdate = edit("year", resource.getYear());
                 resource.setYear(newUpdate);
                 break;
-            case 6:
+            case 0:
                 break;
             default:
                 JOptionPane.showMessageDialog(null, "should not reach here");
@@ -738,5 +756,121 @@ public class LibrarySystem{
         resource.add(new Resource(id, type, name, genre, authorID, year, userID, checkedOut));
     }
 
-    
+    public static void modifyEmployee(ArrayList<User> user){
+        ArrayList<User> users = new ArrayList<User>();
+        users = filterEmployeeList(user);
+
+        String display = getEmployeeList(users);
+
+        int edit = getIntInput(display, 0, users.size());
+        if(edit>0){
+            update(users.get(edit - 1), user);
+        }
+
+    }
+
+    public static ArrayList<User> filterEmployeeList(ArrayList<User> user){
+        ArrayList<User> users = new ArrayList<User>();
+        for(int i = 0; i < user.size(); i++){
+            if(user.get(i) instanceof Employee || user.get(i) instanceof Admin){
+                users.add(user.get(i));
+            }
+        }
+        return users;
+    }
+
+    public static String getEmployeeList(ArrayList<User> user){
+        String display = "Which employee would you like to update?\n";
+        for(int i = 0; i < user.size(); i++){
+            display += "\n[" + (i + 1) + "]" + user.get(i).getFName() + " " + user.get(i).getLName();
+        }
+
+        display+="\n[" + 0 + "] Exit";
+        return display;
+    }
+
+    public static void update(User user, ArrayList<User> users){
+        //User : 1002 : Panda : Huang : panda : password : ayellowman@gmail.com : 123 x street : 0
+        String newUpdate;
+        String display = "What would you like to update?\n\n"+
+        "[1] First Name: " + user.getFName() + "\n" +
+        "[2] Last Name: " + user.getLName() + "\n" +
+        "[3] Username: " + user.getUsername() + "\n" +
+        "[4] Password: " + user.getPassword() + "\n" +
+        "[5] Email: " + user.getEmail() + "\n" +
+        "[6] Address: " + user.getAddress() + "\n";
+        if(user instanceof Admin){
+            display += "[7] Make Employee \n";
+        }else{
+            display += "[7] Make Admin \n";
+        }
+        display += "[0] Exit";
+
+        int edit = getIntInput(display, 0,7);
+
+        switch(edit){
+            case 1:
+                newUpdate = edit("First Name", user.getFName());
+                user.setFName(newUpdate);
+                break;
+            case 2:
+                newUpdate = edit("Last Name", user.getLName());
+                user.setLName(newUpdate);
+                break;
+            case 3:
+                newUpdate = edit("Username", user.getUsername());
+                user.setUsername(newUpdate);
+                break;
+            case 4:
+                newUpdate = edit("Password", user.getPassword());
+                user.setPassword(newUpdate);
+                break;
+            case 5:
+                newUpdate = edit("Email", user.getEmail());
+                user.setEmail(newUpdate);
+                break;
+            case 6:
+                newUpdate = edit("Address", user.getAddress());
+                user.setAddress(newUpdate);
+                break;
+            case 7:
+                changeEmployeeType(user, users);
+                break;
+            case 0:
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "should not reach here");
+        }
+    }
+
+    public static void changeEmployeeType(User user, ArrayList<User> users){
+        User u;
+        if(user instanceof Admin){
+            u = new Employee(user.getUserID(), user.getFName(), user.getLName(), user.getUsername(), user.getPassword(), user.getEmail(), user.getAddress(), user.getResource());
+        }else{
+            u = new Admin(user.getUserID(), user.getFName(), user.getLName(), user.getUsername(), user.getPassword(), user.getEmail(), user.getAddress(), user.getResource());
+        }
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getUserID().equals(u.getUserID())){
+                users.set(i, u);
+            }
+        }
+    }
+
+    public static void deleteUser(ArrayList<User> users){
+        String display = "Which employee would you like to Delete?\n";
+        for(int i = 0; i < users.size(); i++){
+            display += "\n[" + (i + 1) + "]" + users.get(i).getFName() + " " + users.get(i).getLName();
+        }
+        display+="\n[" + 0 + "] Exit";
+
+        int delete = getIntInput(display, 0, users.size());
+        if (delete > 0) {
+            if(users.get(delete - 1).getResource() == "0"){
+                users.remove(delete - 1);
+            }else{
+                JOptionPane.showMessageDialog(null, "Can't delete user. User has a resource checked out");
+            }
+        }
+    }
 }

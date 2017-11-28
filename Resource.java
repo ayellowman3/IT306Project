@@ -201,70 +201,22 @@ public class Resource {
 		this.authorID = authorID;
 	}
 
-	/**
-	* Sets new value of year
-	* @param
-	*/
+
 	public void setYear(String year) {
 		this.year = year;
 	}
 
-	/**
-	* Sets new value of userID
-	* @param
-	*/
+
 	public void setUserID(String userID) {
 		this.userID = userID;
 	}
 
-	/**
-	* Sets new value of checkedOut
-	* @param
-	*/
+
 	public void setCheckedOut(boolean checkedOut) {
 		this.checkedOut = checkedOut;
 	}
 
-	/**
-	* Sets new value of e
-	* @param
-	*/
 
-
-	/**
-	* Sets new value of e
-	* @param
-	*/
-
-
-	/**
-	* Sets new value of getCount
-	* @param
-	*/
-
-
-	/**
-	* Sets new value of getType
-	* @param
-	*/
-
-
-	/**
-	* Sets new value of getName
-	* @param
-	*/
-
-
-	/**
-	* Sets new value of getCheckedOut
-	* @param
-	*/
-
-
-	/**
-	* Sets new value of toString
-	* @param
-	*/
 
     public static int getLastID(){
         return lastID;
