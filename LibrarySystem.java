@@ -2,7 +2,7 @@
  * Project phase 4
  * George Huang, G00775631, ghuang3@masonlive.gmu.edu
  * Ryan Evans, G00954546, revans17@masonlive.gmu.edu
- * 
+ *
  */
 
 import javax.swing.JOptionPane;
@@ -30,7 +30,7 @@ public class LibrarySystem{
     public static void main(String[] args){
         String userPath = "./user.txt";
         String resourcePath = "./resource.txt";
-
+        int num;
         ArrayList<User> user = new ArrayList<User>();
 
         ArrayList<Resource> resource = new ArrayList<Resource>();
