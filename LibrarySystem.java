@@ -2,7 +2,7 @@
  * Project phase 4
  * George Huang, G00775631, ghuang3@masonlive.gmu.edu
  * Ryan Evans, G00954546, revans17@masonlive.gmu.edu
- *
+ * Steven Chen, G00652234, schen27@masonlive.gmu.edu
  */
 
 import javax.swing.JOptionPane;
@@ -30,7 +30,7 @@ public class LibrarySystem{
     public static void main(String[] args){
         String userPath = "./user.txt";
         String resourcePath = "./resource.txt";
-        int num;
+
         ArrayList<User> user = new ArrayList<User>();
 
         ArrayList<Resource> resource = new ArrayList<Resource>();
@@ -91,9 +91,7 @@ public class LibrarySystem{
                    System.out.println("invalid Password");
                }
            }
-        }
-
-
+      }
     }
 
     public static void successLogin(User user, ArrayList<User> users, ArrayList<Resource> resource){
@@ -114,7 +112,7 @@ public class LibrarySystem{
         String gui = "[1] Display resources\n" +
                     "[0] Exit";
         int option = 0;
-        while(option != 2){
+        while(option != 0){
             option = getIntInput(gui, 0, 1);
             switch(option){
                 case 1:
