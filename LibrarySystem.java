@@ -101,6 +101,7 @@ public class LibrarySystem{
         else if(user instanceof Employee){
             employeeGUI(users, resource);
         }else{
+            System.out.println("hi3");
             userGUI(resource);
         }
     }
@@ -111,7 +112,7 @@ public class LibrarySystem{
 
         String gui = "[1] Display resources\n" +
                     "[0] Exit";
-        int option = 0;
+        int option = -1;
         while(option != 0){
             option = getIntInput(gui, 0, 1);
             switch(option){
@@ -219,7 +220,7 @@ public class LibrarySystem{
 
         display = "List of resources\n\n[1]Sort\n[2]Filter\n[0]Exit\n";
         for(int i = 0; i < resource.size(); i++){
-            display += "\n" + resource.get(i).getName() + " ";
+            display += "\n" + resource.get(i).getID() + ": " + resource.get(i).getName() + " ";
             if(resource.get(i).getCheckedOut()){
                 display += "Checked Out";
             }else{
@@ -239,22 +240,61 @@ public class LibrarySystem{
     }
 
     public static void filter(ArrayList<Resource> resource){
+        ArrayList <Resource> tempResource = new ArrayList<Resource>();
+        tempResource = copyResource(resource);
 
+        String gui = "[1] Author\n"+
+                 "[2] Genre\n"+
+                 "[0] Exit";
+        int option;
+        option = getIntInput(gui, 0, 2);
+            switch(option){
+                case 1:
+                    filterAuthor(tempResource);
+                    break;
+                case 2:
+                    filterCategory(tempResource);
+                    break;
+                case 0:
+
+                    break;
+        }
+    }
+    public static void filterAuthor(ArrayList<Resource> resource){
+        String aut = stringInput("Enter author's name: ");
+        ArrayList<Resource> temp = new ArrayList<Resource>();
+        for(int i = 0; i < resource.size(); i++){
+            System.out.println(resource.get(i).getAuthor());
+            if(resource.get(i).getAuthor().equals(aut)){
+                temp.add(resource.get(i));
+            }
+        }
+        displayResources(temp);
+    }
+    public static void filterCategory(ArrayList<Resource> resource){
+        String gen = stringInput("Enter genre: ");
+        ArrayList<Resource> temp = new ArrayList<Resource>();
+        for(int i = 0; i < resource.size(); i++){
+            if(resource.get(i).getGenre().equals(gen)){
+                temp.add(resource.get(i));
+            }
+        }
+        displayResources(temp);
     }
 
     public static void sort(ArrayList<Resource> resource){
         String message = "What would you like to sort by?\n\n" +
                         "[1] ID\n" +
-                        "[2] Title\n" +
+                        //"[2] Title\n" +
                         "[0] Exit";
 
-        int input = getIntInput(message, 0, 2);
+        int input = getIntInput(message, 0, 1);
         switch(input){
             case 1:
                 sortByID(resource);
                 break;
             case 2:
-                sortByTitle(resource);
+                //sortByTitle(resource);
                 break;
             case 0:
                 break;
@@ -266,10 +306,10 @@ public class LibrarySystem{
         displayResources(resource);
     }
 
-    public static void sortByTitle(ArrayList<Resource> resource){
+    /*public static void sortByTitle(ArrayList<Resource> resource){
 
         displayResources(resource);
-    }
+    }*/
 
     public static void popUser(ArrayList<User> user, String path){
         int counter = 0; File file = new File(path);
@@ -412,7 +452,7 @@ public class LibrarySystem{
         String type;
         String name;
         String genre;
-        String authorID;
+        String author;
         String year;
         String userID;
         String checkedOut;
@@ -425,7 +465,7 @@ public class LibrarySystem{
                     type = re.get(i).getType();
                     name = re.get(i).getName();
                     genre = re.get(i).getGenre();
-                    authorID = re.get(i).getAuthorID();
+                    author = re.get(i).getAuthor();
                     year = re.get(i).getYear();
                     userID = re.get(i).getUserID();
                     if(re.get(i).getCheckedOut()){
@@ -439,7 +479,7 @@ public class LibrarySystem{
                         write = "";
                     }
                     write += id + Space + type + Space + name + Space + genre + Space +
-                    authorID + Space +
+                    author + Space +
                     year + Space +
                     userID + Space +
                     checkedOut;
@@ -505,9 +545,9 @@ public class LibrarySystem{
 
         fName = stringInput("Enter admin's first name");
         lName = stringInput("Enter admin's last name");
-        username = stringInput("Enter admin's username");
-        password = stringInput("Enter admin's password");
-        email = stringInput("Enter admin's email");
+        username = usernameInput(user, "Enter admin's username");
+        password = passwordInput(user, "Enter admin's password");
+        email = emailInput("Enter admin's email");
         address = stringInput("Enter admin's address");
 
         user.add(new Admin("1", fName, lName, username, password, email, address, "0"));
@@ -528,9 +568,9 @@ public class LibrarySystem{
         userID = "" + nextID;
         fName = stringInput("Enter user's first name");
         lName = stringInput("Enter user's last name");
-        username = stringInput("Enter user's username");
-        password = stringInput("Enter user's password");
-        email = stringInput("Enter user's email");
+        username = usernameInput(user, "Enter user's username");
+        password = passwordInput(user, "Enter user's password");
+        email = emailInput("Enter user's email");
         address = stringInput("Enter user's address");
 
         JOptionPane.showMessageDialog(null, "Your user ID is: " + userID);
@@ -552,9 +592,9 @@ public class LibrarySystem{
         userID = "" + nextID;
         fName = stringInput("Enter employee's first name");
         lName = stringInput("Enter employee's last name");
-        username = stringInput("Enter employee's username");
-        password = stringInput("Enter employee's password");
-        email = stringInput("Enter employee's email");
+        username = usernameInput(user, "Enter employee's username");
+        password = passwordInput(user, "Enter employee's password");
+        email = emailInput("Enter employee's email");
         address = stringInput("Enter employee's address");
 
         JOptionPane.showMessageDialog(null, "Your user ID is: " + userID);
@@ -583,6 +623,98 @@ public class LibrarySystem{
             input = getIntInput(message, min, max);
         }
         return input;
+    }
+
+    public static String usernameInput(ArrayList<User> user, String s){
+        String username;
+        username = stringInput(s);
+        for(int i = 0; i < user.size(); i++){
+            if(username.equals(user.get(i).getUsername())){
+                JOptionPane.showMessageDialog(null, "Error, Username is already used");
+                return usernameInput(user, s);
+            }
+        }
+        return username;
+    }
+
+    public static String passwordInput(ArrayList<User> user, String s){
+        String password;
+        password = stringInput(s);
+        if(!validatePW(password)){
+            JOptionPane.showMessageDialog(null, "Error, Password does not meet requirments\n8 character length\n1 uppercase\n1 lowercase\n1 number");
+            return passwordInput(user, s);
+        }
+        return password;
+    }
+
+    public static boolean validatePW(String pw){
+
+        boolean uc = false;
+        boolean lc = false;
+        boolean nu = false;
+
+        if(pw.length() < 8){
+            return false;
+        }
+        for(int i = 0; i < pw.length();i++){
+            if(Character.isDigit(pw.charAt(i))){
+                nu = true;
+            }
+            if(Character.isLowerCase(pw.charAt(i))){
+                lc = true;
+            }
+            if(Character.isUpperCase(pw.charAt(i))){
+                uc = true;
+            }
+        }
+        System.out.println(uc && lc && nu);
+        return(uc && lc && nu);
+    }
+
+    public static String emailInput(String s){
+        String email;
+        email = stringInput(s);
+        if(!validateEmail(email)){
+            JOptionPane.showMessageDialog(null, "Error, Please enter a valid email\n(1+)@(1+).(2-4)");
+            return emailInput(s);
+        }
+        return email;
+    }
+
+    public static boolean validateEmail(String email){
+        int at = 0;
+        int atIndex = 0;
+        int p = 0;
+        int lastP = 0;
+        for(int i = 0; i < email.length(); i++){
+            if(email.charAt(i) == '@'){
+                at++;
+                atIndex = i;
+            }
+        }
+        if(at < 1 || at > 1){
+            return false;
+        }
+        for(int i = atIndex; i < email.length(); i++){
+            if(email.charAt(i) == '.'){
+                p++;
+                lastP = i;
+            }
+        }
+        if(p < 1){
+            return false;
+        }
+        if(atIndex < 1){
+            return false;
+        }
+        if(lastP - atIndex <= 1){
+            return false;
+        }
+        int el = email.length();
+        if(el - lastP < 3 || el - lastP > 5 ){
+            return false;
+        }
+        return true;
     }
 
     public static ArrayList<Resource> copyResource(ArrayList<Resource> resource){
@@ -692,7 +824,7 @@ public class LibrarySystem{
         "[1] Type: " + resource.getType() + "\n" +
         "[2] Title: " + resource.getName() + "\n" +
         "[3] Genre: " + resource.getGenre() + "\n" +
-        "[4] Author id: " + resource.getAuthorID() + "\n" +
+        "[4] Author: " + resource.getAuthor() + "\n" +
         "[5] Year: " + resource.getYear() + "\n" +
         "[0] Exit";
 
@@ -712,8 +844,8 @@ public class LibrarySystem{
                 resource.setGenre(newUpdate);
                 break;
             case 4:
-                newUpdate = edit("author id", resource.getAuthorID());
-                resource.setAuthorID(newUpdate);
+                newUpdate = edit("author", resource.getAuthor());
+                resource.setAuthor(newUpdate);
                 break;
             case 5:
                 newUpdate = edit("year", resource.getYear());
@@ -738,7 +870,7 @@ public class LibrarySystem{
         String type;
         String name;
         String genre;
-        String authorID;
+        String author;
         String year;
         String userID = "0";
         Boolean checkedOut = false;
@@ -748,10 +880,10 @@ public class LibrarySystem{
         type = stringInput("What type is the resource");
         name = stringInput("What is the name of the resource");
         genre = stringInput("What genre is the resource");
-        authorID = stringInput("What is the author ID");
+        author = stringInput("Who is the author");
         year = stringInput("What year is it published");
 
-        resource.add(new Resource(id, type, name, genre, authorID, year, userID, checkedOut));
+        resource.add(new Resource(id, type, name, genre, author, year, userID, checkedOut));
     }
 
     public static void modifyEmployee(ArrayList<User> user){

@@ -7,7 +7,7 @@ public class Resource {
     private String type;
     private String name;
     private String genre;
-    private String authorID;
+    private String author;
     private String year;
     private String userID;
     private boolean checkedOut;
@@ -16,13 +16,13 @@ public class Resource {
         count++;
     }
 
-    public Resource(String id,String type,String name,String genre,String authorID,String year, String userID, boolean checkedOut){
+    public Resource(String id,String type,String name,String genre,String author,String year, String userID, boolean checkedOut){
         this();
         this.id = id;
         this.type = type;
         this.name = name;
         this.genre = genre;
-        this.authorID = authorID;
+        this.author = author;
         this.year = year;
         this.userID = userID;
         this.checkedOut = checkedOut;
@@ -69,7 +69,9 @@ public class Resource {
 	* Returns value of type
 	* @return
 	*/
-
+    public String getAuthor(){
+        return this.author;
+    }
 
 	/**
 	* Returns value of genre
@@ -83,9 +85,7 @@ public class Resource {
 	* Returns value of authorID
 	* @return
 	*/
-	public String getAuthorID() {
-		return this.authorID;
-	}
+
 
 	/**
 	* Returns value of year
@@ -197,8 +197,8 @@ public class Resource {
 	* Sets new value of authorID
 	* @param
 	*/
-	public void setAuthorID(String authorID) {
-		this.authorID = authorID;
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 

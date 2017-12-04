@@ -12,30 +12,30 @@ public class SampleGUI{
       gui[4] = "Enter admin's password: ";
       gui[5] = "Enter admin's email: ";
       gui[6] = "Enter admin's address: ";
-   
+
       //login with users
       gui[7] = "Welcome!\n\n" +
              "[1] Login\n" +
              "[2] Create new user\n" +
              "[0] Exit\n";
-   
+
       //login
       gui[8] = "Enter username";
       gui[9] = "Enter password";
-   
+
       //login with invalid password
       gui[10] = "Error! Invalid username or password entered!";
-   
+
       //login as an user
       gui[11] = "[1] Search for Resource\n" +
                  "[0] Exit";
-   
+
       //search for resource
       gui[12] = "[1] Sort\n" +
                  "[2] Filter\n" +
                  "[0] Exit\n\n" +
                  "Book 1\nBook2\nVideo 1";
-   
+
       //set a sort by
       gui[13] = "Sort by:\n" +
                  "[1] ResourceID\n" +
@@ -48,7 +48,7 @@ public class SampleGUI{
                  "[2] Author\n" +
                  "[3] Category\n" +
                  "[0] Cancel";;
-   
+
       //login as an employee
       gui[15] = "[1] Search for Resource\n"+
                  "[2] Checkout\n"+
@@ -56,7 +56,7 @@ public class SampleGUI{
                  "[4] Update Resource\n"+
                  "[5] Add Resource\n"+
                  "[0] Exit";
-   
+
       //checkout
       gui[16] = "Checkout\n\n" +
                  "Enter User ID:";
@@ -64,27 +64,27 @@ public class SampleGUI{
                  "Enter Resource ID:";
       gui[18] = "Checkout Successful!";
       gui[19] = "Error user already as material checked out";
-   
+
       //return
       gui[20] = "Return:\n" +
                  "Enter Resource ID:";
       gui[21] = "Return Successful!";
-   
+
       //update resource
       gui[22] = "Which resource would you like to update\n\n" +
                  "[1] Book1\n" +
                  "[2] Book2\n" +
                  "[3] Book3\n" +
                  "[0] Exit";
-   
+
       gui[23] = "What would you like to update?\n\n" +
                  "[1] Book Title\n" +
                  "[2] Book Author\n" +
                  "[3] Book Genre\n" +
                  "[0] Exit";
-   
+
       //Add resource
-   
+
       gui[24] = "What type of resource is it?\n\n"+
                  "[1] Book\n" +
                  "[2] VHS";
@@ -102,7 +102,7 @@ public class SampleGUI{
                  "[7] Modify Employee\n"+
                  "[8] Delete Employee\n"+
                  "[0] Exit";
-   
+
       //add an employee
       gui[30] = "Enter Employee's first name: ";
       gui[31] = "Enter Employee's last name: ";
@@ -110,7 +110,7 @@ public class SampleGUI{
       gui[33] = "Enter Employee's password: ";
       gui[34] = "Enter Employee's email: ";
       gui[35] = "Enter Employee's address: ";
-   
+
       //modify employee
       gui[36] = "Which Employee would you like to modify?\n\n" +
                  "[1] Employee1\n"+
@@ -125,7 +125,7 @@ public class SampleGUI{
                  "[5] email\n" +
                  "[6] address\n" +
                  "[0] Exit\n";
-   
+
       //delete employee
       gui[38] = "Which Employee would you like to delete?\n\n" +
                  "[1] Employee1\n"+
@@ -134,7 +134,7 @@ public class SampleGUI{
                  "[0] Exit";
       gui[39] = "Employee Deleted!";
       gui[40] = "Employee can not be deleted!\nThey have material checked out!";
-   
+
       //create new user
       gui[41] = "Enter user's first name: ";
       gui[42] = "Enter user's last name: ";
@@ -142,7 +142,7 @@ public class SampleGUI{
       gui[44] = "Enter user's password: ";
       gui[45] = "Enter user's email: ";
       gui[46] = "Enter user's address: ";
-   
+
       int size = 47;
       printer(gui, size);
    }
