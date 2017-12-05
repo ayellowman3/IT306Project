@@ -1,6 +1,7 @@
-Admin : 1000 : George : Huang : ghuang3 : password : ghuang3@masonlive.gmu.edu : 13259 Middleton Farm Ln : 1
-Admin : 1100 : Ryan : Evans : revans17 : qwerty : revans17@masonlive.gmu.edu : 1234 asdf : 1
-Employee : 1005 : Ryan : Evans : revans9 : qwerty : revans17@yahoo.com : 1234 asdf : 1
+Admin : 1000 : George : Huang : ghuang3 : password : ghuang3@masonlive.gmu.edu : 13259 Middleton Farm Ln : 1000
+Admin : 1100 : Ryan : Evans : revans17 : qwerty : revans17@masonlive.gmu.edu : 1234 asdf : 0
+Employee : 1005 : Ryan : Evans : revans9 : qwerty : revans17@yahoo.com : 1234 asdf : 0
+User : 1105 : Steven : Chen : schen27 : password : email : address : 0
 User : 1002 : Panda : Huang : panda : password : ayellowman@gmail.com : 123 x street : 0
 User : 1003 : George : Huang : ayellowman : password : email : address : 0
 User : 1004 : test : test : test : test : test : test : 0

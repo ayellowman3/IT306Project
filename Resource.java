@@ -46,10 +46,10 @@ public class Resource {
         return checkedOut;
     }
 
-    public String toString(){
-        String message = "Type : " + type + " Name: " + name + " checkedOut: " + checkedOut;
-        return message;
-    }
+    // public String toString(){
+    //     String message = "Type : " + type + " Name: " + name + " checkedOut: " + checkedOut;
+    //     return message;
+    // }
 
 	/**
 	* Returns value of count
@@ -110,48 +110,6 @@ public class Resource {
 	public boolean isCheckedOut() {
 		return this.checkedOut;
 	}
-
-	/**
-	* Returns value of e
-	* @return
-	*/
-
-
-	/**
-	* Returns value of e
-	* @return
-	*/
-
-
-	/**
-	* Returns value of getCount
-	* @return
-	*/
-
-
-	/**
-	* Returns value of getType
-	* @return
-	*/
-
-
-	/**
-	* Returns value of getName
-	* @return
-	*/
-
-
-	/**
-	* Returns value of getCheckedOut
-	* @return
-	*/
-
-
-	/**
-	* Returns value of toString
-	* @return
-	*/
-
 
 	/**
 	* Sets new value of count
@@ -221,4 +179,13 @@ public class Resource {
     public static int getLastID(){
         return lastID;
     }
+
+	/**
+	* Create string representation of Resource for printing
+	* @return
+	*/
+	@Override
+	public String toString() {
+		return "Resource [id=" + id + ", type=" + type + ", name=" + name + ", genre=" + genre + ", author=" + author + ", year=" + year + ", userID=" + userID + ", checkedOut=" + checkedOut + "]";
+	}
 }

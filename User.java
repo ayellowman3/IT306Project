@@ -109,12 +109,6 @@ public class User {
 	}
 
 	/**
-	* Returns value of r
-	* @return
-	*/
-
-
-	/**
 	* Sets new value of count
 	* @param
 	*/
@@ -189,4 +183,13 @@ public class User {
     public static int getLastUserID(){
         return lastUserID;
     }
+
+	/**
+	* Create string representation of User for printing
+	* @return
+	*/
+	@Override
+	public String toString() {
+		return "User [userID=" + userID + ", fName=" + fName + ", lName=" + lName + ", username=" + username + ", password=" + password + ", email=" + email + ", address=" + address + ", resource=" + resource + "]";
+	}
 }

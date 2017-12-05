@@ -24,8 +24,6 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.*;
 
-
-
 public class LibrarySystem{
     public static void main(String[] args){
         String userPath = "./user.txt";
@@ -49,6 +47,21 @@ public class LibrarySystem{
         else{
             loginMenu(user, resource);
         }
+    }
+
+    public static void displayAll(ArrayList<User> user, ArrayList<Resource> resource){
+         String users = "";
+         String resources = "";
+         for (int i = 0; i < user.size(); i++) {
+              users += user.get(i).toString();
+              users += "\n";
+         }
+         for (int i = 0; i < resource.size(); i++) {
+              resources += resource.get(i).toString();
+              resources += "\n";
+         }
+         JOptionPane.showMessageDialog(null, users);
+         JOptionPane.showMessageDialog(null, resources);
     }
 
     public static void loginMenu(ArrayList<User> user, ArrayList<Resource> resource){
@@ -102,11 +115,11 @@ public class LibrarySystem{
             employeeGUI(users, resource);
         }else{
             System.out.println("hi3");
-            userGUI(resource);
+            userGUI(users, resource);
         }
     }
 
-    public static void userGUI(ArrayList<Resource> resource){
+    public static void userGUI(ArrayList<User> users, ArrayList<Resource> resource){
         ArrayList<Resource> tempResource = new ArrayList<Resource>();
         tempResource = copyResource(resource);
 
@@ -114,12 +127,13 @@ public class LibrarySystem{
                     "[0] Exit";
         int option = -1;
         while(option != 0){
-            option = getIntInput(gui, 0, 1);
+            option = getIntInput(gui, 0, 2);
             switch(option){
                 case 1:
                     displayResources(tempResource);
                     break;
                 case 2:
+                    displayAll(users, resource);
                     break;
                 default:
                     option = 0;
@@ -141,7 +155,7 @@ public class LibrarySystem{
                  "[0] Exit";
         int option = -1;
         while(option != 0){
-            option = getIntInput(gui, 0, 5);
+            option = getIntInput(gui, 0, 6);
             switch(option){
                 case 1:
                     displayResources(tempResource);
@@ -161,6 +175,7 @@ public class LibrarySystem{
                     tempResource = copyResource(resource);
                     break;
                 case 6:
+                    displayAll(user, resource);
                     break;
 
             }
@@ -182,7 +197,7 @@ public class LibrarySystem{
                     "[0] Exit";
         int option = -1;
         while(option != 0){
-            option = getIntInput(gui, 0, 8);
+            option = getIntInput(gui, 0, 9);
             switch(option){
                 case 1:
                     displayResources(tempResource);
@@ -209,6 +224,9 @@ public class LibrarySystem{
                     break;
                 case 8:
                     deleteUser(user);
+                    break;
+               case 9:
+                    displayAll(user, resource);
                     break;
 
             }
@@ -305,11 +323,6 @@ public class LibrarySystem{
         Collections.sort(resource, new ComparatorByID());
         displayResources(resource);
     }
-
-    /*public static void sortByTitle(ArrayList<Resource> resource){
-
-        displayResources(resource);
-    }*/
 
     public static void popUser(ArrayList<User> user, String path){
         int counter = 0; File file = new File(path);
